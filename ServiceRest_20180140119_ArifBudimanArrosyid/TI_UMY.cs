@@ -20,7 +20,7 @@ namespace ServiceRest_20180140119_ArifBudimanArrosyid
         {
             string msg = "GAGAL";
             SqlConnection sqlcon = new SqlConnection("Data Source=ARIFBUDIMANAR;Initial Catalog=\"TI UMY\";Persist Security Info=True;User ID=sa;Password=Arrosyid");
-            string query = string.Format("Insert into dbo.Mahasiswa values ('{0}', '{1}', '{2}', '{3}')", mhs.nama, mhs.nim, mhs.prodi, mhs.angkatan);
+            string query = string.Format("Insert into dbo.Mahasiswa values ('{1}', '{0}', '{2}', '{3}')", mhs.nama, mhs.nim, mhs.prodi, mhs.angkatan);
             //NIM = '{0}'", nim)
             // string query = "Insert into dbo.Mahasiswa values ('"+mhs.nama+"', '"+mhs.nim+"', '"+mhs.prodi+"', '"+mhs.angkatan+"')";
             SqlCommand sqlcom = new SqlCommand(query, sqlcon); //yg dikirim ke sql
@@ -84,32 +84,29 @@ namespace ServiceRest_20180140119_ArifBudimanArrosyid
         {
             Mahasiswa mhs = new Mahasiswa();
             SqlConnection con = new SqlConnection("Data Source=ARIFBUDIMANAR;Initial Catalog=\"TI UMY\";Persist Security Info=True;User ID=sa;Password=Arrosyid");
-            string query = String.Format("Select Nama, NIM, Prodi, Angkatan from dbo.Mahasiswa where NIM = '{0}'", nim);
-            SqlCommand com = new SqlCommand(query, con); //yg dikirim ke sql
+            string query = string.Format("Select Nama, NIM, Prodi, Angkatan from dbo.Mahasiswa where NIM = '{0}'", nim);
+            SqlCommand com = new SqlCommand(query, con);
 
             try
             {
                 con.Open();
-                SqlDataReader reader = com.ExecuteReader(); //mendapatkan data yg telah dieksekusi, dari select hasil query ditaruh di reader
+                SqlDataReader reader = com.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    mhs.nama = reader.GetString(0); //e itu array pertama // ini diambil dari iservice
+                    mhs.nama = reader.GetString(0); // 0 itu array pertama // ini di ambil dari iservice
                     mhs.nim = reader.GetString(1);
                     mhs.prodi = reader.GetString(2);
                     mhs.angkatan = reader.GetString(3);
                 }
-
                 con.Close();
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(query);
             }
-
-            return mhs; //output
+            return mhs;
         }
     }
 }
